@@ -16,6 +16,19 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Free E-Ink Image Converter | Floyd-Steinberg Dithering Tool",
   description: "Convert images to 1-bit black and white dithered format optimized for E-Paper and E-Ink displays. Fast, free, and runs securely in your browser.",
+  keywords: "e-ink image converter, 1-bit bmp dither online, image to e-paper display, floyd-steinberg online tool, black and white converter",
+  openGraph: {
+    title: "Free E-Ink Image Converter | Floyd-Steinberg Dithering Tool",
+    description: "Convert images to 1-bit black and white dithered format optimized for E-Paper and E-Ink displays. Fast, free, and runs securely in your browser.",
+    url: "https://eink-tools.vercel.app",
+    siteName: "E-Ink Image Converter",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Free E-Ink Image Converter | Floyd-Steinberg Dithering Tool",
+    description: "Convert images to 1-bit black and white dithered format optimized for E-Paper and E-Ink displays. Fast, free, and runs securely in your browser.",
+  },
   verification: {
     google: "zKLUOesbx1kp3h9sz7UCrStho9CgubDtcpPMqtgiYo0",
   },

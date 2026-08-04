@@ -2,6 +2,7 @@
 
 import { useState, useRef, ChangeEvent } from "react";
 import { applyFloydSteinbergDither } from "@/utils/dither";
+import Script from "next/script";
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -45,7 +46,6 @@ export default function Home() {
 
     setIsProcessing(true);
 
-    // Use a small timeout to let the UI update (e.g. showing processing state)
     setTimeout(() => {
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const processedData = applyFloydSteinbergDither(imageData);
@@ -65,31 +65,83 @@ export default function Home() {
     link.click();
   };
 
-  return (
-    <main className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl w-full space-y-8">
-        <div className="text-center">
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl">
-            E-Ink Image Converter
-          </h1>
-          <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
-            Convert your images to 1-bit black and white using Floyd-Steinberg dithering. 100% secure, everything happens in your browser.
-          </p>
-        </div>
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "E-Ink Image Converter",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any",
+        "description": "A free, client-side online tool to convert images to 1-bit black and white format using Floyd-Steinberg dithering for E-Paper displays.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is Floyd-Steinberg dithering?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Floyd-Steinberg dithering is an image processing algorithm used to create the illusion of color depth in images with a limited color palette (like 1-bit black and white). It works by pushing the quantization error of a pixel to its neighboring pixels."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which devices support this?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The resulting 1-bit black and white images are perfect for E-Paper and E-Ink displays, such as Amazon Kindle, reMarkable tablets, Waveshare e-paper modules, and DIY Raspberry Pi/Arduino e-ink projects."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is my data secure?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! The conversion happens 100% locally in your web browser using HTML5 Canvas. Your images are never uploaded to any server."
+            }
+          }
+        ]
+      }
+    ]
+  };
 
-        <div className="bg-white shadow sm:rounded-lg">
-          <div className="px-4 py-5 sm:p-6">
-            <div className="space-y-6">
+  return (
+    <>
+      <Script
+        id="schema-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
+        <article className="max-w-4xl w-full space-y-12">
+          
+          <header className="text-center space-y-4">
+            <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl tracking-tight">
+              E-Ink Image Converter
+            </h1>
+            <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500">
+              Convert your images to 1-bit black and white using Floyd-Steinberg dithering. 100% secure, everything happens in your browser.
+            </p>
+          </header>
+
+          <section className="bg-white shadow-xl sm:rounded-2xl border border-gray-100 overflow-hidden" aria-label="Image Converter Tool">
+            <div className="px-4 py-8 sm:p-10 space-y-8">
               
-              {/* Upload Area */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-gray-700">
                   Upload Image
                 </label>
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-gray-400 transition-colors">
-                  <div className="space-y-1 text-center">
+                <div className="flex justify-center px-6 pt-5 pb-6 border-2 border-indigo-200 border-dashed rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all">
+                  <div className="space-y-2 text-center">
                     <svg
-                      className="mx-auto h-12 w-12 text-gray-400"
+                      className="mx-auto h-12 w-12 text-indigo-400"
                       stroke="currentColor"
                       fill="none"
                       viewBox="0 0 48 48"
@@ -105,9 +157,9 @@ export default function Home() {
                     <div className="flex text-sm text-gray-600 justify-center">
                       <label
                         htmlFor="file-upload"
-                        className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                        className="relative cursor-pointer rounded-md font-semibold text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                       >
-                        <span>Upload a file</span>
+                        <span>Click to upload a file</span>
                         <input
                           id="file-upload"
                           name="file-upload"
@@ -115,6 +167,7 @@ export default function Home() {
                           accept="image/*"
                           className="sr-only"
                           onChange={handleImageUpload}
+                          aria-label="Upload an image file"
                         />
                       </label>
                     </div>
@@ -123,41 +176,80 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               {imageSrc && (
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
                   <button
                     onClick={convertToEInk}
                     disabled={isProcessing}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                    aria-label="Convert uploaded image to E-Ink format"
+                    className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 transition-colors"
                   >
                     {isProcessing ? "Processing..." : "Convert to E-Ink"}
                   </button>
                   <button
                     onClick={downloadImage}
-                    className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    aria-label="Download the converted image as PNG"
+                    className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
                   >
                     Download (.png)
                   </button>
                 </div>
               )}
 
-              {/* Canvas Preview */}
-              <div className="mt-6 flex flex-col items-center overflow-hidden border rounded bg-gray-100 min-h-[300px] justify-center relative">
+              <div className="flex flex-col items-center overflow-hidden border border-gray-200 rounded-xl bg-gray-50 min-h-[300px] justify-center relative shadow-inner">
                 {!imageSrc && (
-                  <p className="text-gray-400 absolute">No image uploaded</p>
+                  <p className="text-gray-400 absolute font-medium">Preview will appear here</p>
                 )}
                 <canvas
                   ref={canvasRef}
                   className="max-w-full h-auto object-contain"
                   style={{ display: imageSrc ? "block" : "none" }}
+                  aria-label="Image Preview Canvas"
+                  role="img"
                 />
               </div>
 
             </div>
-          </div>
-        </div>
-      </div>
-    </main>
+          </section>
+
+          <section className="bg-white shadow-md sm:rounded-2xl p-8 border border-gray-100" aria-labelledby="how-it-works">
+            <h2 id="how-it-works" className="text-2xl font-bold text-gray-900 mb-4">How It Works</h2>
+            <p className="text-gray-600 leading-relaxed">
+              Our <strong>1-bit BMP dither online</strong> tool allows you to convert standard images into an <strong>image for e-paper displays</strong> completely within your browser. 
+              By leveraging HTML5 Canvas, the image is converted to grayscale, and the <strong>Floyd-Steinberg online tool</strong> algorithm distributes pixel quantization errors across adjacent pixels. 
+              This results in a highly optimized, high-contrast, black-and-white output perfectly tailored for E-Ink technology. Since everything runs locally, your privacy is 100% guaranteed.
+            </p>
+          </section>
+
+          <section className="bg-white shadow-md sm:rounded-2xl p-8 border border-gray-100" aria-labelledby="faq-section">
+            <h2 id="faq-section" className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+            
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">What is Floyd-Steinberg dithering?</h3>
+                <p className="mt-2 text-gray-600">
+                  Floyd-Steinberg dithering is a popular image processing algorithm used to create the illusion of depth in images with a restricted color palette (like a 1-bit black and white format). It achieves this by taking the quantization error of a pixel and distributing (or "diffusing") it to neighboring pixels.
+                </p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Which devices support this format?</h3>
+                <p className="mt-2 text-gray-600">
+                  The generated 1-bit black and white images are ideal for virtually all E-Paper and E-Ink displays. This includes devices like Amazon Kindle, reMarkable tablets, Waveshare e-paper modules, and DIY Arduino or Raspberry Pi e-ink projects.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Is my data and image secure?</h3>
+                <p className="mt-2 text-gray-600">
+                  Absolutely. We take your privacy seriously. The entire conversion process occurs locally on your machine using your browser&apos;s native capabilities. Your images are never uploaded or stored on any server.
+                </p>
+              </div>
+            </div>
+          </section>
+
+        </article>
+      </main>
+    </>
   );
 }
