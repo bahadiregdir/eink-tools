@@ -119,29 +119,29 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
-        <article className="max-w-4xl w-full space-y-12">
+      <main className="min-h-screen bg-slate-50 flex flex-col items-center py-16 px-4 sm:px-6 lg:px-8">
+        <article className="max-w-3xl w-full space-y-16">
           
-          <header className="text-center space-y-4">
-            <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl tracking-tight">
+          <header className="text-center space-y-6">
+            <h1 className="text-4xl font-extrabold text-slate-900 sm:text-5xl tracking-tight">
               E-Ink Image Converter
             </h1>
-            <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500">
+            <p className="mt-4 max-w-2xl mx-auto text-xl text-slate-600 font-light">
               Convert your images to 1-bit black and white using Floyd-Steinberg dithering. 100% secure, everything happens in your browser.
             </p>
           </header>
 
-          <section className="bg-white shadow-xl sm:rounded-2xl border border-gray-100 overflow-hidden" aria-label="Image Converter Tool">
-            <div className="px-4 py-8 sm:p-10 space-y-8">
+          <section className="bg-white shadow-xl shadow-slate-200/50 sm:rounded-3xl border border-slate-100 overflow-hidden" aria-label="Image Converter Tool">
+            <div className="px-4 py-8 sm:p-12 space-y-10">
               
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-700">
+              <div className="space-y-4">
+                <label className="block text-sm font-semibold text-slate-700">
                   Upload Image
                 </label>
-                <div className="flex justify-center px-6 pt-5 pb-6 border-2 border-indigo-200 border-dashed rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all">
-                  <div className="space-y-2 text-center">
+                <div className="flex justify-center px-6 pt-8 pb-10 border-2 border-slate-200 border-dashed rounded-2xl hover:border-blue-400 hover:bg-blue-50/50 transition-colors duration-200 group cursor-pointer" onClick={() => document.getElementById("file-upload")?.click()}>
+                  <div className="space-y-3 text-center">
                     <svg
-                      className="mx-auto h-12 w-12 text-indigo-400"
+                      className="mx-auto h-12 w-12 text-slate-400 group-hover:text-blue-500 transition-colors duration-200"
                       stroke="currentColor"
                       fill="none"
                       viewBox="0 0 48 48"
@@ -154,11 +154,8 @@ export default function Home() {
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <div className="flex text-sm text-gray-600 justify-center">
-                      <label
-                        htmlFor="file-upload"
-                        className="relative cursor-pointer rounded-md font-semibold text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
-                      >
+                    <div className="flex text-sm text-slate-600 justify-center">
+                      <span className="relative rounded-md font-semibold text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
                         <span>Click to upload a file</span>
                         <input
                           id="file-upload"
@@ -169,36 +166,36 @@ export default function Home() {
                           onChange={handleImageUpload}
                           aria-label="Upload an image file"
                         />
-                      </label>
+                      </span>
                     </div>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                    <p className="text-xs text-slate-500">PNG, JPG, GIF up to 10MB</p>
                   </div>
                 </div>
               </div>
 
               {imageSrc && (
-                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                   <button
                     onClick={convertToEInk}
                     disabled={isProcessing}
                     aria-label="Convert uploaded image to E-Ink format"
-                    className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 transition-colors"
+                    className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-semibold rounded-xl shadow-sm text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 transition-colors duration-200 cursor-pointer"
                   >
                     {isProcessing ? "Processing..." : "Convert to E-Ink"}
                   </button>
                   <button
                     onClick={downloadImage}
                     aria-label="Download the converted image as PNG"
-                    className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+                    className="inline-flex items-center justify-center px-8 py-4 border border-slate-300 text-base font-medium rounded-xl shadow-sm text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-colors duration-200 cursor-pointer"
                   >
                     Download (.png)
                   </button>
                 </div>
               )}
 
-              <div className="flex flex-col items-center overflow-hidden border border-gray-200 rounded-xl bg-gray-50 min-h-[300px] justify-center relative shadow-inner">
+              <div className="flex flex-col items-center overflow-hidden border border-slate-200 rounded-2xl bg-slate-50/50 min-h-[300px] justify-center relative shadow-inner">
                 {!imageSrc && (
-                  <p className="text-gray-400 absolute font-medium">Preview will appear here</p>
+                  <p className="text-slate-400 absolute font-medium">Preview will appear here</p>
                 )}
                 <canvas
                   ref={canvasRef}
@@ -212,36 +209,36 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="bg-white shadow-md sm:rounded-2xl p-8 border border-gray-100" aria-labelledby="how-it-works">
-            <h2 id="how-it-works" className="text-2xl font-bold text-gray-900 mb-4">How It Works</h2>
-            <p className="text-gray-600 leading-relaxed">
+          <section className="bg-white shadow-sm sm:rounded-3xl p-8 sm:p-12 border border-slate-100" aria-labelledby="how-it-works">
+            <h2 id="how-it-works" className="text-2xl font-bold text-slate-900 mb-6 tracking-tight">How It Works</h2>
+            <p className="text-slate-600 leading-relaxed text-lg">
               Our <strong>1-bit BMP dither online</strong> tool allows you to convert standard images into an <strong>image for e-paper displays</strong> completely within your browser. 
               By leveraging HTML5 Canvas, the image is converted to grayscale, and the <strong>Floyd-Steinberg online tool</strong> algorithm distributes pixel quantization errors across adjacent pixels. 
               This results in a highly optimized, high-contrast, black-and-white output perfectly tailored for E-Ink technology. Since everything runs locally, your privacy is 100% guaranteed.
             </p>
           </section>
 
-          <section className="bg-white shadow-md sm:rounded-2xl p-8 border border-gray-100" aria-labelledby="faq-section">
-            <h2 id="faq-section" className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+          <section className="bg-white shadow-sm sm:rounded-3xl p-8 sm:p-12 border border-slate-100" aria-labelledby="faq-section">
+            <h2 id="faq-section" className="text-2xl font-bold text-slate-900 mb-8 tracking-tight">Frequently Asked Questions</h2>
             
-            <div className="space-y-6">
+            <div className="space-y-8">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">What is Floyd-Steinberg dithering?</h3>
-                <p className="mt-2 text-gray-600">
+                <h3 className="text-lg font-semibold text-slate-900">What is Floyd-Steinberg dithering?</h3>
+                <p className="mt-2 text-slate-600 leading-relaxed">
                   Floyd-Steinberg dithering is a popular image processing algorithm used to create the illusion of depth in images with a restricted color palette (like a 1-bit black and white format). It achieves this by taking the quantization error of a pixel and distributing (or "diffusing") it to neighboring pixels.
                 </p>
               </div>
               
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Which devices support this format?</h3>
-                <p className="mt-2 text-gray-600">
+                <h3 className="text-lg font-semibold text-slate-900">Which devices support this format?</h3>
+                <p className="mt-2 text-slate-600 leading-relaxed">
                   The generated 1-bit black and white images are ideal for virtually all E-Paper and E-Ink displays. This includes devices like Amazon Kindle, reMarkable tablets, Waveshare e-paper modules, and DIY Arduino or Raspberry Pi e-ink projects.
                 </p>
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Is my data and image secure?</h3>
-                <p className="mt-2 text-gray-600">
+                <h3 className="text-lg font-semibold text-slate-900">Is my data and image secure?</h3>
+                <p className="mt-2 text-slate-600 leading-relaxed">
                   Absolutely. We take your privacy seriously. The entire conversion process occurs locally on your machine using your browser&apos;s native capabilities. Your images are never uploaded or stored on any server.
                 </p>
               </div>
